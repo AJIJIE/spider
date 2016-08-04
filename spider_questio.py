@@ -22,17 +22,11 @@ response = urllib2.urlopen(request)
 html_doc = response.read()
 soup =BeautifulSoup(html_doc, 'html.parser')
 contents=soup.find_all('div',class_='content')
-print contents.get_text()
-authors=soup.find_all_previous('div',class_='author clearfix')
-# for author in authors:
-#     authorname = author.get_text()
-#     print  authorname
-# for content in contents:
-#     text = content.get_text()
-#     print text
-# for author in authors:
-#     authorname=author.get_text()
-#     print authorname
+for content in contents:
+    text = content.get_text()
+    print text
+#如何使用beautifulsoup获取作者，内容，时间等一组内容？
+
 
 
 
