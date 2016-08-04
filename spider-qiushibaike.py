@@ -1,27 +1,36 @@
 
+# -*- coding:utf-8 -*-
 import urllib
 import urllib2
-import re
+from bs4 import BeautifulSoup
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
-page=1
-url = 'http://www.qiushibaike.com/hot/page'+str(page)
-user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'
+#获取网页数据
+page = 3
+url = 'http://www.qiushibaike.com/hot/page/' + str(page)
+#需要添加user_agent和headers，否则无法请求到源码
+user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 headers = { 'User-Agent' : user_agent }
-try:
-    request = urllib2.Request(url,headers = headers)
-    response = urllib2.urlopen(request)
-    print response.read()
+request = urllib2.Request(url,headers = headers)
+response = urllib2.urlopen(request)
+#使用bs4 库，读取<div class=content ></div>中的内容
+html_doc = response.read()
+soup =BeautifulSoup(html_doc, 'html.parser')
+#find_all 格式，中的attrs，可以更精确的定义<div class=content ></div>
+contents=soup.find_all('div',{'class':'content'})
 
-    content = response.read().decode('utf-8')
-    pattern = re.compile('<div.*?author">.*?<a.*?<img.*?>(.*?)</a>.*?<div.*?' +
-                     'content">(.*?)<!--(.*?)-->.*?</div>(.*?)<div class="stats.*?class="number">(.*?)</i>', re.S)
-    items = re.findall(pattern, content)
-    for item in items:
-        haveImg = re.search("img",item[3])
-        if not haveImg:
-           print item[0],item[1],item[2],item[4]
-except urllib2.URLError, e:
-    if hasattr(e, "code"):
-        print e.code
-    if hasattr(e, "reason"):
-        print e.reason
+for content in contents:
+    text=content.get_text()
+#注意文件打开的模式，使用追加可以多次添加，如果使用‘w’，则只会出现一条信息
+#open的文件，可以有具体的路径，如果没有该文件，则会创建一个这样的文件
+    file = open(r'C:\Users\123456\Desktop\2.txt', 'a+')
+    print text
+    file.write(str(text))
+
+file.close()
+
+
+
+
