@@ -4,7 +4,9 @@ import re
 
 #获取网页数据
 def getHtml(url):
+#打开网页
     page = urllib.urlopen(url)
+#读取数据
     html = page.read()
     return html
 #正则匹配，筛选图片

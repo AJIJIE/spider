@@ -13,8 +13,11 @@ url = 'http://www.qiushibaike.com/hot/page/' + str(page)
 #需要添加user_agent和headers，否则无法请求到源码
 user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 headers = { 'User-Agent' : user_agent }
+#请求网页
 request = urllib2.Request(url,headers = headers)
+#打开网页
 response = urllib2.urlopen(request)
+#读取数据
 #使用bs4 库，读取<div class=content ></div>中的内容
 html_doc = response.read()
 soup =BeautifulSoup(html_doc, 'html.parser')
