@@ -22,17 +22,19 @@ response = urllib2.urlopen(request)
 html_doc = response.read()
 soup =BeautifulSoup(html_doc, 'html.parser')
 #find_all 格式，中的attrs，可以更精确的定义<div class=content ></div>
-contents=soup.find_all('div',{'class':'content'})
+items=soup.find_all('div',{'class':'article block untagged mb15'})
 
-for content in contents:
-    text=content.get_text()
+#总的循环中，寻找每一个条目时，再从中筛选出，内容和作者
+for item in items:
+
+    print item.find('h2').get_text(),item.find('div',{'class':'content'}).get_text()
 #注意文件打开的模式，使用追加可以多次添加，如果使用‘w’，则只会出现一条信息
 #open的文件，可以有具体的路径，如果没有该文件，则会创建一个这样的文件
-    file = open(r'C:\Users\123456\Desktop\2.txt', 'a+')
-    print text
-    file.write(str(text))
-
-file.close()
+#     file = open(r'C:\Users\123456\Desktop\2.txt', 'a+')
+#     print text
+#     file.write(str(text))
+#
+# # file.close()
 
 
 
